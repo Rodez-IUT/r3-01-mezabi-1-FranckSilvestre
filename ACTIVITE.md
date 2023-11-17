@@ -67,8 +67,7 @@ Après avoir étudié le code source de l'application, répondez à la question 
 
 > Quels défauts de conception majeurs comporte cette application sur la feature "Édition des catégories" par rapport au _design pattern_ MVC ?
 
-...  
-...
+Aucune séparation de responsabilité.
 
 > fix #3.1 Revue de code OK
 
