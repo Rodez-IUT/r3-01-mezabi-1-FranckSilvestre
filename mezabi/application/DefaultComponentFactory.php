@@ -21,6 +21,7 @@ namespace application;
 
 use controllers\HomeController;
 use controllers\ArticlesController;
+use services\ArticlesService;
 use yasmf\ComponentFactory;
 use yasmf\NoControllerAvailableForNameException;
 use yasmf\NoServiceAvailableForNameException;
@@ -30,6 +31,7 @@ use yasmf\NoServiceAvailableForNameException;
  */
 class DefaultComponentFactory implements ComponentFactory
 {
+    private ?ArticlesService $articlesService = null;
 
     /**
      * @param string $controller_name the name of the controller to instanciate
@@ -51,7 +53,10 @@ class DefaultComponentFactory implements ComponentFactory
      */
     public function buildServiceByName(string $service_name): mixed
     {
-        return new NoServiceAvailableForNameException($service_name);
+        return match ($service_name) {
+            "Articles" => $this->buildArticlesService(),
+            default => throw new NoServiceAvailableForNameException($service_name)
+        };
     }
 
 
@@ -60,16 +65,27 @@ class DefaultComponentFactory implements ComponentFactory
      */
     private function buildHomeController(): HomeController
     {
-        return new HomeController();
+        return new HomeController($this->buildArticlesService());
     }
 
 
     /**
-     * @return HomeController
+     * @return ArticlesController
      */
     private function buildArticlesController(): ArticlesController
     {
-        return new ArticlesController();
+        return new ArticlesController($this->buildArticlesService());
+    }
+
+     /**
+     * @return ArticlesService
+     */
+    private function buildArticlesService(): ArticlesService
+    {
+        if ($this->articlesService == null) {
+            $this->articlesService = new ArticlesService();
+        }
+        return $this->articlesService;
     }
 
 }
