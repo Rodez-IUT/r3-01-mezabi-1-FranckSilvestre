@@ -29,6 +29,13 @@ Accédez à l'application en utilisant cette URL :
 
 Vérifiez que l'application fonctionne comme attendu.
 
+Pour l'accès aux logs de l'application :
+
+```
+$ docker logs mezabi-1-app --follow
+```
+
+
 > fix #1.2 Application fonctionne localement
 
 ## 2. Feature 2 : "Consultation des catégories et des articles"
@@ -40,8 +47,7 @@ Après avoir étudié le code source de l'application, répondez à la question 
 > Quel défaut de conception majeur comporte cette application sur la feature "Consultation des catégories et des articles"
 > par rapport au _design pattern_ MVC ?
 
-...  
-...
+Pas de séparation de responsabilité entre le contrôleur et le modèle : le contrôleur gère la récupération des données au lieu de la déléguer à un service.
 
 > fix #2.1 Revue de code OK
 
