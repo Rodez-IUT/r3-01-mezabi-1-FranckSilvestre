@@ -27,7 +27,7 @@
             <td><?php echo $code ?></td>
             <td><?php echo $designation ?></td>
             <td><a href="/mezabi?controller=Articles&code_categorie=<?php echo $code ?>&categorie=<?php echo $designation ?>">Voir les articles</a></td>
-            <td><a href="/mezabi/edit-categorie.php?code_categorie=<?php echo $code ?>&categorie=<?php echo $designation ?>">Modifier la catégorie</a></td>
+            <td><a href="/mezabi?controller=Categories&action=goEditCategorie&code_categorie=<?php echo $code ?>&categorie=<?php echo $designation ?>">Modifier la catégorie</a></td>
         </tr>
     <?php } ?>
 </table>

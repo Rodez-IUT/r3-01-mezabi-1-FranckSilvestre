@@ -6,22 +6,7 @@ use PDOException;
 
 class ArticlesService
 {
-    /**
-     * @param $pdo
-     *  the pdo object used to connect to the database
-     * @return $searchStmt
-     *  to access to all categories
-     */
-    public function findAllCategories($pdo)
-    {
-        $sql = "select code_categorie, designation 
-            from a_categories
-            order by code_categorie";
-        $searchStmt = $pdo->prepare($sql);
-        $searchStmt->execute();
-        return $searchStmt;
-    }
-
+    
     /**
      * @param $pdo
      *  The pdo object used to connect to the database
@@ -40,4 +25,5 @@ class ArticlesService
         $searchStmt->execute([$codeCategorie]);
         return $searchStmt;
     }
+
 }

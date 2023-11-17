@@ -19,9 +19,11 @@
 
 namespace application;
 
+use controllers\CategoriesController;
 use controllers\HomeController;
 use controllers\ArticlesController;
 use services\ArticlesService;
+use services\CategoriesService;
 use yasmf\ComponentFactory;
 use yasmf\NoControllerAvailableForNameException;
 use yasmf\NoServiceAvailableForNameException;
@@ -32,6 +34,7 @@ use yasmf\NoServiceAvailableForNameException;
 class DefaultComponentFactory implements ComponentFactory
 {
     private ?ArticlesService $articlesService = null;
+    private ?CategoriesService $categoriesService = null;
 
     /**
      * @param string $controller_name the name of the controller to instanciate
@@ -42,6 +45,7 @@ class DefaultComponentFactory implements ComponentFactory
         return match ($controller_name) {
             "Home" => $this->buildHomeController(),
             "Articles" => $this->buildArticlesController(),
+            "Categories" => $this->buildCategoriesController(),
             default => throw new NoControllerAvailableForNameException($controller_name)
         };
     }
@@ -55,6 +59,7 @@ class DefaultComponentFactory implements ComponentFactory
     {
         return match ($service_name) {
             "Articles" => $this->buildArticlesService(),
+            "Categories" => $this->buildCategoriesService(),
             default => throw new NoServiceAvailableForNameException($service_name)
         };
     }
@@ -65,7 +70,7 @@ class DefaultComponentFactory implements ComponentFactory
      */
     private function buildHomeController(): HomeController
     {
-        return new HomeController($this->buildArticlesService());
+        return new HomeController($this->buildServiceByName("Categories"));
     }
 
 
@@ -74,7 +79,15 @@ class DefaultComponentFactory implements ComponentFactory
      */
     private function buildArticlesController(): ArticlesController
     {
-        return new ArticlesController($this->buildArticlesService());
+        return new ArticlesController($this->buildServiceByName("Articles"));
+    }
+
+    /**
+     * @return CategoriesController
+     */
+    private function buildCategoriesController(): CategoriesController
+    {
+        return new CategoriesController($this->buildServiceByName("Categories"));
     }
 
      /**
@@ -86,6 +99,17 @@ class DefaultComponentFactory implements ComponentFactory
             $this->articlesService = new ArticlesService();
         }
         return $this->articlesService;
+    }
+
+    /**
+     * @return CategoriesService
+     */
+    private function buildCategoriesService(): CategoriesService
+    {
+        if ($this->categoriesService == null) {
+            $this->categoriesService = new CategoriesService();
+        }
+        return $this->categoriesService;
     }
 
 }

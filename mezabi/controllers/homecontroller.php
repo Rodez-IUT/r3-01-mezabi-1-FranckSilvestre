@@ -1,21 +1,24 @@
 <?php
 namespace controllers;
 
+use services\CategoriesService;
 use yasmf\View;
-use services\ArticlesService;
+
 
 class HomeController {
-    private ArticlesService $articlesService;
+    private CategoriesService $categoriesService;
 
-    public function __construct(ArticlesService $articlesService) {
-        $this->articlesService = $articlesService;
+    public function __construct(CategoriesService $categoriesService) {
+        $this->categoriesService = $categoriesService;
     }
     public function index($pdo) {
-        $searchStmt = $this->articlesService->findAllCategories($pdo);        
+        $searchStmt = $this->categoriesService->findAllCategories($pdo);        
         $view = new View("/views/all_categories");
         $view->setVar('searchStmt',$searchStmt);
         return $view;
     }
+
+    
 
 }
 
